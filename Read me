@@ -1,0 +1,15 @@
+# 🔥 RetroCore 31
+
+Sistema inteligente para Melate Retro basado en análisis de datos.
+
+## 🧠 Características
+
+- Análisis de frecuencia
+- Núcleo estratégico (31, 22, 12, 07)
+- Pool optimizado de 29 números
+- Generador de jugadas inteligentes
+
+## 🚀 Uso
+
+```bash
+streamlit run app.py
