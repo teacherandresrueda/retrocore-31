@@ -1,8 +1,22 @@
 import streamlit as st
-from core_ai import generar_2_jugadas_pro
-from data import historial
-from auth import login, registrar
-from storage import guardar_jugada, obtener_historial
+from core_ai import generar_jugadas_avanzadas
+
+st.subheader("🧠 Detección Inteligente")
+
+if st.button("🔥 Generar jugadas del día (Nivel 12 IA)"):
+    
+    jugadas, hot, cold, rebote = generar_jugadas_avanzadas(historial)
+
+    st.write("🔥 HOT:", hot)
+    st.write("❄️ COLD:", cold)
+    st.write("⚡ REBOTE:", rebote)
+
+    st.subheader("🎯 Jugadas del día")
+
+    for i, j in enumerate(jugadas):
+        st.success(f"Jugada {i+1}: {j}")
+
+    guardar_jugada(st.session_state.user, jugadas)
 
 st.set_page_config(page_title="RetroCore 31", layout="centered")
 
