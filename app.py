@@ -4,7 +4,6 @@ st.set_page_config(
     page_title="RetroCore 31",
     layout="centered"
 )
-
 # 🎨 estilo PRO
 st.markdown("""
     <style>
@@ -32,8 +31,16 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+st.subheader("📥 Entrada")
+st.text_input(...)
 
-st.title("RetroCore 31 🔥")
+st.subheader("⚙️ Acciones")
+st.button(...)
+
+st.subheader("🎯 Resultado")
+st.success(...)
+st.markdown("<h1>🔥 RetroCore 31</h1>", unsafe_allow_html=True)
+st.write("Sistema Inteligente • Melate Retro")
 
 # 👉 input manual
 numeros = st.text_input("Ingresa jugada (ej: 1,7,9,22,31,38)")
@@ -46,8 +53,7 @@ if st.button("Guardar jugada"):
 # 👉 generar con IA
 if st.button("Generar jugada personalizada"):
     jugada = generar_jugada_personalizada()
-    st.write("🎯 Jugada:", jugada)
-
+st.success(f"🎯 Jugada generada: {jugada}")
 # 👉 ver historial
 if st.checkbox("Ver historial"):
     data = cargar_historial()
