@@ -5,7 +5,24 @@ st.subheader("🧠 IA Predictiva Nivel 13")
 if st.button("🚀 Generar jugadas predictivas"):
     
     jugadas, top10 = generar_jugadas_predictivas(historial)
+from learning import ajustar_pesos, cargar_modelo
 
+# después de generar jugadas
+if st.button("📥 Registrar resultado del sorteo"):
+    resultado = st.text_input("Ingresa resultado (ej: 1,7,12,22,31,38)")
+
+    if resultado:
+        resultado = [int(x) for x in resultado.split(",")]
+
+        aciertos = 0
+        for j in jugadas:
+            aciertos += len(set(j) & set(resultado))
+
+        modelo = cargar_modelo()
+        modelo = ajustar_pesos(modelo, aciertos)
+
+        st.success(f"Aciertos: {aciertos}")
+        st.write("Modelo actualizado:", modelo)
     st.write("🔥 Top números del día:")
     st.write(top10)
 
