@@ -1,1 +1,2 @@
-requirements.tstreamlit
+streamlit
+pandas
