@@ -1,15 +1,13 @@
-import streamlit as st
-from core_ai import generar_jugadas_avanzadas
+from core_ai import generar_jugadas_predictivas
 
-st.subheader("🧠 Detección Inteligente")
+st.subheader("🧠 IA Predictiva Nivel 13")
 
-if st.button("🔥 Generar jugadas del día (Nivel 12 IA)"):
+if st.button("🚀 Generar jugadas predictivas"):
     
-    jugadas, hot, cold, rebote = generar_jugadas_avanzadas(historial)
+    jugadas, top10 = generar_jugadas_predictivas(historial)
 
-    st.write("🔥 HOT:", hot)
-    st.write("❄️ COLD:", cold)
-    st.write("⚡ REBOTE:", rebote)
+    st.write("🔥 Top números del día:")
+    st.write(top10)
 
     st.subheader("🎯 Jugadas del día")
 
