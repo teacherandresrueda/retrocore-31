@@ -1,6 +1,37 @@
 import streamlit as st
-from storage import guardar_jugada, cargar_historial
-from core_ai import generar_jugada_personalizada
+
+st.set_page_config(
+    page_title="RetroCore 31",
+    layout="centered"
+)
+
+# 🎨 estilo PRO
+st.markdown("""
+    <style>
+    body {
+        background-color: #0f172a;
+    }
+    .stApp {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white;
+    }
+    h1 {
+        text-align: center;
+        font-size: 48px;
+    }
+    .stButton>button {
+        background-color: #22c55e;
+        color: white;
+        border-radius: 12px;
+        padding: 10px;
+        font-weight: bold;
+    }
+    .stTextInput>div>div>input {
+        border-radius: 10px;
+        padding: 10px;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 st.title("RetroCore 31 🔥")
 
