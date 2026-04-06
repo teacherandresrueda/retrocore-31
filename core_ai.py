@@ -2,38 +2,48 @@ from collections import Counter
 import random
 
 # -------------------------
-# ANALISIS FRECUENCIA
+# ANALISIS BASE
 # -------------------------
 def analizar_frecuencia(historial):
     numeros = [n for fila in historial for n in fila]
-    conteo = Counter(numeros)
-    return [num for num, _ in conteo.most_common()]
+    return Counter(numeros)
 
 # -------------------------
-# DETECCION AVANZADA
+# SCORE PREDICTIVO
 # -------------------------
-def detectar_hot_cold(historial):
-    numeros = [n for fila in historial for n in fila]
-    conteo = Counter(numeros)
+def calcular_score(historial):
+    conteo = analizar_frecuencia(historial)
 
-    # HOT = más frecuentes
-    hot = [num for num, _ in conteo.most_common(6)]
+    score = {}
 
-    # COLD = menos frecuentes
-    todos = set(range(1,40))
-    usados = set(numeros)
-    cold = list(todos - usados)
+    # recencia (últimos sorteos pesan más)
+    ultimos = historial[-3:]
 
-    if len(cold) < 6:
-        cold = [num for num, _ in conteo.most_common()[-6:]]
+    for num in range(1,40):
+        frecuencia = conteo.get(num, 0)
 
-    # REBOTE = último sorteo
-    rebote = historial[-1]
+        # recencia
+        recencia = sum(1 for fila in ultimos if num in fila)
 
-    return hot, cold, rebote
+        # ciclo (si no aparece hace tiempo)
+        ciclos = 0
+        for fila in reversed(historial):
+            if num not in fila:
+                ciclos += 1
+            else:
+                break
+
+        # fórmula de score
+        score[num] = (
+            frecuencia * 2 +      # peso histórico
+            recencia * 3 +        # peso reciente
+            min(ciclos, 5)        # peso ciclo (limitado)
+        )
+
+    return score
 
 # -------------------------
-# VALIDACION MATEMATICA
+# VALIDACION
 # -------------------------
 def validar_jugada(jugada):
     pares = sum(1 for n in jugada if n % 2 == 0)
@@ -52,30 +62,30 @@ def validar_jugada(jugada):
     return True
 
 # -------------------------
-# GENERADOR NIVEL 12
+# GENERADOR PREDICTIVO
 # -------------------------
-def generar_jugadas_avanzadas(historial):
-    frecuentes = analizar_frecuencia(historial)
-    hot, cold, rebote = detectar_hot_cold(historial)
+def generar_jugadas_predictivas(historial):
+    score = calcular_score(historial)
 
-    base = frecuentes[:3]  # núcleo fuerte
+    # ordenar por score
+    ordenados = sorted(score, key=score.get, reverse=True)
+
+    top = ordenados[:15]
+    medio = ordenados[15:30]
 
     jugadas = []
 
     while len(jugadas) < 2:
         seleccion = []
 
-        # núcleo
-        seleccion += random.sample(base, 3)
+        # 3 fuertes
+        seleccion += random.sample(top, 3)
 
-        # hot extra
-        seleccion += random.sample(hot, 1)
+        # 2 medios
+        seleccion += random.sample(medio, 2)
 
-        # cold
-        seleccion += random.sample(cold, 1)
-
-        # rebote
-        seleccion += random.sample(rebote, 1)
+        # 1 aleatorio controlado
+        seleccion += random.sample(range(1,40), 1)
 
         jugada = sorted(set(seleccion))
 
@@ -83,4 +93,4 @@ def generar_jugadas_avanzadas(historial):
             if jugada not in jugadas:
                 jugadas.append(jugada)
 
-    return jugadas, hot, cold, rebote
+    return jugadas, ordenados[:10]
